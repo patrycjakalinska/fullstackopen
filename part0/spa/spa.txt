@@ -1,0 +1,16 @@
+title patrycjakalinska/fullstackopen/part0
+
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML-code
+
+browser->server: HTTP GET hhttps://studies.cs.helsinki.fi/exampleapp/main.ss
+server-->browser: main.css
+
+browser->server: HTTP GET hhttps://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: spa.js
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: "g", date: "2022-05-25T19:17:42.452Z"}, ...]
+
+
