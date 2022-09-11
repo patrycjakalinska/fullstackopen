@@ -44,6 +44,7 @@ const App = () => {
 
   return (
     <div>
+      <h2>Anectode of the day</h2>
       <Anecdote text={anecdotes[selected]} votes={points[selected]} />
       <Button
         onClick={() =>
@@ -52,6 +53,7 @@ const App = () => {
         text="next anecdote"
       />
       <Button onClick={handleVoteClick} text="vote" />
+      <h2>Anecdote with most votes</h2>
       <Anecdote
         text={anecdotes[mostVotedAnecdoteIndex]}
         votes={points[mostVotedAnecdoteIndex]}
