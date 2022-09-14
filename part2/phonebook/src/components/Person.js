@@ -1,10 +1,11 @@
-const Person = ({ person }) => {
+const Person = ({ person, onDelete }) => {
   const { name, number } = person;
 
   return (
-    <li>
+    <div>
       {name} {number}
-    </li>
+      <button onClick={() => onDelete(person.id, name)}>delete</button>
+    </div>
   );
 };
 

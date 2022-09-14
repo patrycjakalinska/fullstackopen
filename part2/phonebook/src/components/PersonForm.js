@@ -23,7 +23,14 @@ const PersonForm = ({ addPerson }) => {
         </div>
       </div>
       <div>
-        <button type="submit" onClick={(e) => addPerson(e, name, number)}>
+        <button
+          type="submit"
+          onClick={(e) => {
+            addPerson(e, name, number);
+            setName("");
+            setNumber("");
+          }}
+        >
           add
         </button>
       </div>

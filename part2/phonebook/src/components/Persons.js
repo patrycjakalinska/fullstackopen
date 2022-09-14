@@ -1,11 +1,11 @@
 import Person from "./Person";
 
-const Persons = ({ persons }) => (
-  <ul>
+const Persons = ({ persons, onDelete }) => (
+  <div>
     {persons.map((person) => (
-      <Person key={person.name} person={person} />
+      <Person key={person.name} person={person} onDelete={onDelete} />
     ))}
-  </ul>
+  </div>
 );
 
 export default Persons;

@@ -1,30 +1,81 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
+    const fetchData = async () => {
+      try {
+        personService
+          .getAll()
+          .then((initialPersons) => setPersons(initialPersons));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
   }, []);
 
   const addPerson = (e, name, number) => {
     e.preventDefault();
-
-    const person = {
+    const personObject = {
       name: name,
       number: number,
     };
+    const matchedPerson = persons.find((person) => person.name === name);
+    let shouldUpdate = false;
 
-    persons.filter((person) => person.name === name).length > 0
-      ? alert(`${name} is already added to phonebook`)
-      : setPersons(persons.concat(person));
+    if (matchedPerson) {
+      shouldUpdate = window.confirm(
+        `${name} is already added to phonebook, replace the old number with a new one?`
+      );
+    }
+    try {
+      if (!matchedPerson) {
+        personService
+          .create(personObject)
+          .then((initialPersons) => setPersons(persons.concat(initialPersons)));
+      } else if (matchedPerson && shouldUpdate) {
+        try {
+          personService
+            .update({ ...matchedPerson, number })
+            .then((updatedPerson) => {
+              setPersons(
+                persons.map((p) => (p.name !== name ? p : updatedPerson))
+              );
+            });
+        } catch (e) {
+          console.error(e);
+          setPersons(persons.filter((p) => p.id !== matchedPerson.id));
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const deletePerson = async (id, name) => {
+    let shouldDelete = false;
+    if (persons.find((p) => p.id === id)) {
+      shouldDelete = window.confirm(`Delete ${name}?`);
+    }
+    if (shouldDelete) {
+      try {
+        await personService.destroy(id);
+        const newPersons = persons.filter((p) => p.id !== id);
+        setPersons(newPersons);
+      } catch (e) {
+        console.error(e);
+        setPersons(persons.filter((p) => p.id !== id));
+      }
+    } else {
+      shouldDelete = false;
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -43,14 +94,9 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter onChange={handleSearchChange} searchText={searchText} />
       <h2>add a new</h2>
-      <PersonForm
-        addPerson={() => {
-          addPerson();
-          setSearchText("");
-        }}
-      />
+      <PersonForm addPerson={addPerson} />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDelete={deletePerson} />
     </div>
   );
 };
