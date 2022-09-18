@@ -3,10 +3,13 @@ import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,9 +40,12 @@ const App = () => {
     }
     try {
       if (!matchedPerson) {
-        personService
-          .create(personObject)
-          .then((initialPersons) => setPersons(persons.concat(initialPersons)));
+        personService.create(personObject).then((initialPersons) => {
+          setPersons(
+            persons.concat(initialPersons),
+            showMessage(setSuccessMessage, `Added ${initialPersons.name}`)
+          );
+        });
       } else if (matchedPerson && shouldUpdate) {
         try {
           personService
@@ -48,15 +54,24 @@ const App = () => {
               setPersons(
                 persons.map((p) => (p.name !== name ? p : updatedPerson))
               );
+              showMessage(setSuccessMessage, `Updated ${updatedPerson.name}`);
             });
         } catch (e) {
-          console.error(e);
+          showMessage(
+            setErrorMessage,
+            `${name} has already been removed from server`
+          );
           setPersons(persons.filter((p) => p.id !== matchedPerson.id));
         }
       }
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const showMessage = (setMessage, message) => {
+    setMessage(message);
+    setTimeout(() => setMessage(""), 5000);
   };
 
   const deletePerson = async (id, name) => {
@@ -69,8 +84,12 @@ const App = () => {
         await personService.destroy(id);
         const newPersons = persons.filter((p) => p.id !== id);
         setPersons(newPersons);
+        showMessage(setErrorMessage, `Deleted ${name}`);
       } catch (e) {
-        console.error(e);
+        showMessage(
+          setErrorMessage,
+          `${name} has already been removed from server`
+        );
         setPersons(persons.filter((p) => p.id !== id));
       }
     } else {
@@ -92,6 +111,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} type="success" />
+      <Notification message={errorMessage} type="error" />
       <Filter onChange={handleSearchChange} searchText={searchText} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} />
