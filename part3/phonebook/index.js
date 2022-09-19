@@ -1,7 +1,25 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 app.use(express.json());
+// app.use(morgan("tiny"));
+morgan.token("body", function (req, res) {
+  return req.body;
+});
+const logger = morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, "content-length"),
+    "-",
+    tokens["response-time"](req, res),
+    "ms",
+    req.method === "POST" ? JSON.stringify(tokens.body(req, res)) : "",
+  ].join(" ");
+});
+app.use(logger);
 
 let persons = [
   {
@@ -68,7 +86,7 @@ app.post("/api/persons", (req, res) => {
     return res.status(400).json({
       error: "content missing",
     });
-  } else if (persons.filter((p) => p.name === body.name)) {
+  } else if (persons.filter((p) => p.name === body.name).length > 0) {
     return res.status(409).json({
       error: "name must be unique",
     });
@@ -81,7 +99,6 @@ app.post("/api/persons", (req, res) => {
   };
 
   persons = persons.concat(person);
-  console.log(person);
   res.json(person);
 });
 
