@@ -43,6 +43,7 @@ const App = () => {
         personService.create(personObject).then((initialPersons) => {
           setPersons(
             persons.concat(initialPersons),
+            console.log(initialPersons),
             showMessage(setSuccessMessage, `Added ${initialPersons.name}`)
           );
         });
