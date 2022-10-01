@@ -6,23 +6,14 @@ const getAll = async () => {
   return data;
 };
 const create = async (newObject) => {
-  try {
-    const { data } = await axios.post(baseUrl, newObject);
-    return data;
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
+  const { data } = await axios.post(baseUrl, newObject);
+  return data;
 };
 
 const update = async (newObject) => {
-  try {
-    const { data } = await axios.put(`${baseUrl}/${newObject.id}`, newObject);
-    return data;
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
+  console.log("data frotned", newObject);
+  const { data } = await axios.put(`${baseUrl}/${newObject.id}`, newObject);
+  return data;
 };
 
 const destroy = async (id) => {

@@ -40,33 +40,32 @@ const App = () => {
     }
     try {
       if (!matchedPerson) {
-        personService.create(personObject).then((initialPersons) => {
-          setPersons(
-            persons.concat(initialPersons),
-            console.log(initialPersons),
-            showMessage(setSuccessMessage, `Added ${initialPersons.name}`)
-          );
-        });
+        personService
+          .create(personObject)
+          .then((initialPersons) => {
+            setPersons(
+              persons.concat(initialPersons),
+              showMessage(setSuccessMessage, `Added ${initialPersons.name}`)
+            );
+          })
+          .catch((error) => {
+            showMessage(setErrorMessage, error.response.data.error);
+          });
       } else if (matchedPerson && shouldUpdate) {
-        try {
-          personService
-            .update({ ...matchedPerson, number })
-            .then((updatedPerson) => {
-              setPersons(
-                persons.map((p) => (p.name !== name ? p : updatedPerson))
-              );
-              showMessage(setSuccessMessage, `Updated ${updatedPerson.name}`);
-            });
-        } catch (e) {
-          showMessage(
-            setErrorMessage,
-            `${name} has already been removed from server`
+        personService
+          .update({ ...matchedPerson, number })
+          .then((updatedPerson) => {
+            setPersons(
+              persons.map((p) => (p.name !== name ? p : updatedPerson))
+            );
+            showMessage(setSuccessMessage, `Updated ${updatedPerson.name}`);
+          })
+          .catch((error) =>
+            showMessage(setErrorMessage, error.response.data.error)
           );
-          setPersons(persons.filter((p) => p.id !== matchedPerson.id));
-        }
       }
     } catch (e) {
-      console.error(e);
+      console.error("main error", e);
     }
   };
 
