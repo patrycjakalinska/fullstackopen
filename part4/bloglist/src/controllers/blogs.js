@@ -61,19 +61,25 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 })
 
-blogsRouter.put('/:id', async (req, res) => {
-  const blog = await Blog.findById(req.params.id)
-  if (!blog) {
-    return res.status(404).setDefaultEncoding({ error: 'blog not found' })
+blogsRouter.put('/:id', async (req, res, next) => {
+  const requiredKeys = ['title', 'author', 'likes', 'url']
+
+  try {
+    const blog = await Blog.findById(req.params.id)
+    if (!blog) {
+      return res.status(404).setDefaultEncoding({ error: 'blog not found' })
+    }
+
+    for (const key of Object.keys(req.body)) {
+      if (requiredKeys.includes(key)) {
+        blog[key] = req.body[key]
+      }
+    }
+    const updatedBlog = await blog.save()
+    res.send(updatedBlog)
+  } catch (err) {
+    next(err)
   }
-
-  blog.title = req.body.title
-  blog.author = req.body.author
-  blog.likes = req.body.likes
-  blog.url = req.body.url
-
-  const updatedBlog = await blog.save()
-  res.send(updatedBlog)
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
