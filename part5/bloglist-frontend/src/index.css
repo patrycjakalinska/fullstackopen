@@ -17,3 +17,10 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.blog-post {
+  border: 1px solid black;
+  padding-top: 10px;
+  padding-left: 2px;
+  margin-bottom: 5px;
+}
