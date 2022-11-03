@@ -110,7 +110,7 @@ function App() {
         </div>
       ) : (
         <div>
-          <h1>blogs</h1>
+          <h1>forum</h1>
           <Notification message={successMessage} type="success" />
           <Notification message={errorMessage} type="error" />
           <div>

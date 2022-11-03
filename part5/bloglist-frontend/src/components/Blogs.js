@@ -6,7 +6,7 @@ const Blogs = ({ blogs, handleLikes, handleRemove }) => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>bloglist</h2>
 
       <div>
         {sortedBlogs.map((blog) => (

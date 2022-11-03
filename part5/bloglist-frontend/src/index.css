@@ -20,7 +20,20 @@
 
 .blog-post {
   border: 1px solid black;
+  max-width: 50%;
   padding-top: 10px;
-  padding-left: 2px;
-  margin-bottom: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.blog-author, .blog-title {
+  display: inline;
+}
+
+button {
+  border-radius: 6px;
+  background-color: rgb(236, 223, 223);
+  border: 1px solid rgb(90, 69, 69);
+  margin: 3px
 }

@@ -8,9 +8,9 @@ const BlogForm = ({ addBlog }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const isAdded = addBlog({title, author, url})
+    const isAdded = addBlog({ title, author, url })
 
-    if(isAdded) {
+    if (isAdded) {
       setTitle('')
       setAuthor('')
       setUrl('')
@@ -26,6 +26,7 @@ const BlogForm = ({ addBlog }) => {
           <input
             type="text"
             value={title}
+            placeholder="title"
             name="Title"
             onChange={({ target }) => setTitle(target.value)}
           />
@@ -35,6 +36,7 @@ const BlogForm = ({ addBlog }) => {
           <input
             type="text"
             value={author}
+            placeholder="author"
             name="Author"
             onChange={({ target }) => setAuthor(target.value)}
           />
@@ -44,6 +46,7 @@ const BlogForm = ({ addBlog }) => {
           <input
             type="text"
             value={url}
+            placeholder="url"
             name="Url"
             onChange={({ target }) => setUrl(target.value)}
           />

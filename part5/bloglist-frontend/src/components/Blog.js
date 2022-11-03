@@ -10,23 +10,22 @@ const Blog = ({ blog, handleLikes, handleRemove }) => {
   }
   return (
     <div className="blog-post">
-      <div>
-        {blog.title} {blog.author}
-      </div>
-      <button onClick={() => setDisplayDetails(!displayDetails)}>
+      <div className="blog-title">{blog.title} </div>
+      <div className="blog-author">{blog.author}</div>
+      <button className="blog--view-detials" onClick={() => setDisplayDetails(!displayDetails)}>
         {displayDetails ? 'hide' : 'view'}
       </button>
       {displayDetails && (
-        <div>
-          <div>{blog.url}</div>
-          <div>
+        <div className="blog-details">
+          <div className="blog-details--url">{blog.url}</div>
+          <div className="blog-details--likes">
             likes: {blog.likes}
             <button onClick={() => handleLikes(blog.id)}>like</button>
           </div>
+          <div className="blog-details--user">by: {blog.user.username}</div>
           <div>
             <button onClick={removeBlog}>remove</button>
           </div>
-          <div>by: {blog.user.username}</div>
         </div>
       )}
     </div>
