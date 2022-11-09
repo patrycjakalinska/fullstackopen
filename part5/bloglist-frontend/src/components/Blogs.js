@@ -8,7 +8,7 @@ const Blogs = ({ blogs, handleLikes, handleRemove }) => {
     <div>
       <h2>bloglist</h2>
 
-      <div>
+      <div className="blogs">
         {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} handleLikes={handleLikes} handleRemove={handleRemove} />
         ))}

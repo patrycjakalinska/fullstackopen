@@ -14,29 +14,35 @@ const LoginForm = ({ handleLogin }) => {
   }
 
   return (
-    <form onSubmit={loginHelper}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => {
-            setUsername(target.value)
-          }}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div className="login-form">
+      <form onSubmit={loginHelper}>
+        <div>
+          username
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            id="username"
+            onChange={({ target }) => {
+              setUsername(target.value)
+            }}
+          />
+        </div>
+        <div>
+          password
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            id="password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button id="login-button" type="submit">
+          login
+        </button>
+      </form>
+    </div>
   )
 }
 
