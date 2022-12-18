@@ -65,7 +65,7 @@ function App() {
 
   const handleLikes = async (id) => {
     const blogToUpdate = blogs.find((blog) => blog.id === id)
-
+    console.log(blogToUpdate)
     const updatedBlog = await blogService.update(id, {
       ...blogToUpdate,
       likes: blogToUpdate.likes + 1,

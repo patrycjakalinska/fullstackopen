@@ -43,7 +43,7 @@ blogsRouter.post('/', async (req, res, next) => {
       title: body.title,
       author: body.author,
       url: body.url,
-      user: user._id,
+      user: user,
       likes: body.likes,
     })
 
@@ -51,8 +51,6 @@ blogsRouter.post('/', async (req, res, next) => {
       res.status(400).end()
     }
     const savedBlog = await blog.save()
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
 
     res.status(201).json(savedBlog)
   } catch (err) {

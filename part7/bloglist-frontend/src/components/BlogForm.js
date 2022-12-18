@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { changeNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ addBlog }) => {
+const BlogForm = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const isAdded = addBlog({ title, author, url })
+    const isAdded = props.createBlog({ title, author, url })
 
     if (isAdded) {
       setTitle('')
@@ -62,4 +66,4 @@ const BlogForm = ({ addBlog }) => {
   )
 }
 
-export default BlogForm
+export default connect(null, { createBlog, changeNotification })(BlogForm)
