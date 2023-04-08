@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { loginUser } from '../reducers/loginReducer'
-import { changeNotification } from '../reducers/notificationReducer'
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { loginUser } from "../reducers/loginReducer"
+import { changeNotification } from "../reducers/notificationReducer"
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
 
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       dispatch(loginUser({ username, password }))
-      setUsername('')
-      setPassword('')
+      setUsername("")
+      setPassword("")
     } catch (e) {
       changeNotification(e)
     }
@@ -51,6 +51,5 @@ const LoginForm = () => {
     </div>
   )
 }
-
 
 export default LoginForm

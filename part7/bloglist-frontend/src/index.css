@@ -31,6 +31,10 @@
   display: inline;
 }
 
+.navigation-panel {
+  background-color: rgb(197, 197, 197);
+}
+
 button {
   border-radius: 6px;
   background-color: rgb(236, 223, 223);
