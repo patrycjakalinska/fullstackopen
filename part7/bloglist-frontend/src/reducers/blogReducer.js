@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
+import { redirect } from 'react-router-dom'
 
 const blogSlice = createSlice({
   name: 'blog',
@@ -10,6 +11,15 @@ const blogSlice = createSlice({
       const { id } = likedBlog
       return state.map((blog) =>
         blog.id !== id ? blog : { ...blog, likes: blog.likes + 1 }
+      )
+    },
+    addComment(state, action) {
+      const { comment } = action.payload
+      const blogToComment = action.payload.blog
+      return state.map((blog) =>
+        blog.id !== blogToComment.id
+          ? blog
+          : { ...blog, comments: blogToComment.comments.concat(comment) }
       )
     },
     appendBlog(state, action) {
@@ -26,7 +36,8 @@ const blogSlice = createSlice({
   },
 })
 
-export const { setBlogs, appendBlog, likeBlog, deleteBlog } = blogSlice.actions
+export const { setBlogs, appendBlog, likeBlog, addComment, deleteBlog } =
+  blogSlice.actions
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -40,14 +51,22 @@ export const removeBlog = (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       await blogService.remove(blog)
       dispatch(deleteBlog(blog))
+      return redirect('/')
     }
   }
 }
 
 export const blogLike = (blog) => {
   return async (dispatch) => {
-    const blogToUpdate = await blogService.update(blog)
+    const blogToUpdate = await blogService.updateLikes(blog)
     dispatch(likeBlog(blogToUpdate))
+  }
+}
+
+export const blogComment = (blog, commentToAdd) => {
+  return async (dispatch) => {
+    const comment = await blogService.createComment(blog, commentToAdd)
+    dispatch(addComment({ blog, comment }))
   }
 }
 

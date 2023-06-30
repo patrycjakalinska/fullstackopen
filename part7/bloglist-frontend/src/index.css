@@ -1,3 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+button {
+  border-radius: 20px;
+  padding: 1em;
+}
+
+.notification{
+  z-index: 1;
+  position: absolute;
+  margin-bottom: 30rem;
+}
+
+.togglable-button {
+  border: 1px solid rgb(236, 223, 223);
+}
+
 .error {
   color: red;
   background: lightgrey;
@@ -18,6 +38,8 @@
   margin-bottom: 10px;
 }
 
+
+
 .blog-post {
   border: 1px solid black;
   max-width: 50%;
@@ -35,9 +57,3 @@
   background-color: rgb(197, 197, 197);
 }
 
-button {
-  border-radius: 6px;
-  background-color: rgb(236, 223, 223);
-  border: 1px solid rgb(90, 69, 69);
-  margin: 3px
-}

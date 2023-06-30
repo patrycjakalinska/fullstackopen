@@ -29,7 +29,6 @@ export const loginUser = (username, password) => {
   return async (dispatch) => {
     const user = await loginService.login(username, password)
     window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-    console.log(user)
     dispatch(userLogin(user))
   }
 }
