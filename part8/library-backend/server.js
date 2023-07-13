@@ -1,5 +1,6 @@
 require('./db/mongoose')
 const jwt = require('jsonwebtoken')
+const config = require('./utils/config')
 
 const { ApolloServer, AuthenticationError } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
@@ -59,7 +60,6 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args, context) => {
-      console.log(context)
       if (Object.keys(args).length === 0) {
         return await Book.find({}).populate('author')
       }
@@ -79,7 +79,9 @@ const resolvers = {
         })
       }
     },
-    allAuthors: () => Author.find({}),
+    allAuthors: async () => {
+      return Author.find({})
+    },
     me: (root, args, context) => context.currentUser,
   },
   Mutation: {

@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 import Select from 'react-select'
@@ -6,7 +6,6 @@ import Select from 'react-select'
 const Authors = ({ show }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  // const [selectedOption, setSelectedOption] = useState(null)
 
   const [changeBirthYear] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -14,15 +13,11 @@ const Authors = ({ show }) => {
 
   const result = useQuery(ALL_AUTHORS)
 
-  if (!show) {
+  if (!show || result.loading) {
     return null
   }
 
-  if (result.loading) {
-    return <div>loading...</div>
-  }
-
-  const authors = result.data.allAuthors || []
+  const authors = result.data.allAuthors
 
   const options = []
 
