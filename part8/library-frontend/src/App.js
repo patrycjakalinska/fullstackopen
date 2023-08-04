@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
 
 import Authors from './components/Authors'
@@ -7,25 +7,46 @@ import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 
-import { ALL_AUTHORS, ALL_BOOKS, USER } from './queries'
+import { ALL_AUTHORS } from './queries'
+
+export const updateCache = (cache, query, addedPerson) => {
+  const uniqByName = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.name
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+  cache.updateQuery(query, ({ allPersons }) => {
+    return {
+      allPersons: uniqByName(allPersons.concat(addedPerson)),
+    }
+  })
+}
 
 const App = () => {
+  const client = useApolloClient()
   const [page, setPage] = useState('books')
+  const [error, setError] = useState('')
   const [token, setToken] = useState(null)
 
-  const client = useApolloClient()
-  const user = useQuery(USER)
-  const books = useQuery(ALL_BOOKS)
-  const authors = useQuery(ALL_AUTHORS)
-
-  if (books.loading || authors.loading) {
-    return <div>loading...</div>
-  }
+  useEffect(() => {
+    const token = localStorage.getItem('library-user-token')
+    if (token) {
+      setToken(token)
+    }
+  }, [])
 
   const logout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+  }
+
+  const authors = useQuery(ALL_AUTHORS)
+
+  if (authors.loading) {
+    return <div>loading...</div>
   }
 
   return (
@@ -48,14 +69,10 @@ const App = () => {
 
       <Authors show={page === 'authors'} authors={authors.data.allAuthors} />
 
-      <Books show={page === 'books'} books={books.data.allBooks} />
+      <Books show={page === 'books'} />
 
-      <NewBook show={page === 'add'} />
-      <Recommendations
-        show={page === 'recommendations'}
-        favouriteGenre={user.data.me.favouriteGenre}
-        books={books.data.allBooks}
-      />
+      <NewBook show={page === 'add'} setError={setError} setPage={setPage} />
+      <Recommendations show={page === 'recommendations'} />
 
       <LoginForm
         show={page === 'loginform'}

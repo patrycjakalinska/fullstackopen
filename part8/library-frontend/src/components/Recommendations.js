@@ -1,16 +1,20 @@
-const Recommendations = ({ show, favouriteGenre, books }) => {
+import { useQuery } from '@apollo/client'
+import React from 'react'
+import { USER_RECOMMENDED } from '../queries'
+
+const Recommendations = ({ show }) => {
+  const {loading, data} = useQuery(USER_RECOMMENDED)
+  
+
   if (!show) {
     return null
   }
-  const filteredBooks = books.filter((b) => b.genres.includes(favouriteGenre))
-  console.log(filteredBooks)
+  if (loading) return <div>loading...</div>
 
   return (
     <div>
       <h2>recommendations</h2>
-      <div>
-        books in your favourite genre: <strong>{favouriteGenre}</strong>
-      </div>
+      <div>books in your favourite genre:<strong></strong> </div>
       <div>
         <table>
           <tbody>
@@ -19,7 +23,7 @@ const Recommendations = ({ show, favouriteGenre, books }) => {
               <th>author</th>
               <th>published</th>
             </tr>
-            {filteredBooks.map((a) => (
+            {data.userRecommended.map((a) => (
               <tr key={a.title}>
                 <td>{a.title}</td>
                 <td>{a.author.name}</td>
