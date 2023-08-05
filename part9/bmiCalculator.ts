@@ -1,22 +1,4 @@
-interface PersonParams {
-  height: number;
-  weight: number;
-}
-const parseArgument = (args: string[]): PersonParams => {
-  if (args.length < 4) throw new Error('Not enough');
-  if (args.length > 4) throw new Error('too many');
-
-  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    return {
-      height: Number(args[2]),
-      weight: Number(args[3]),
-    };
-  } else {
-    throw new Error('Not numbers');
-  }
-};
-
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmiValue: number = (weight / (height * height)) * 10000;
   if (bmiValue < 18.5) {
     return 'Underweight';
@@ -30,7 +12,8 @@ const calculateBmi = (height: number, weight: number): string => {
 };
 
 try {
-  const { height, weight } = parseArgument(process.argv);
+  const height = Number(process.argv[2]);
+  const weight = Number(process.argv[3]);
   console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
   let errorMessage = 'Something bad! ';
