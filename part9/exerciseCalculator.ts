@@ -6,7 +6,7 @@ interface Rating {
   description: RatingDesc;
 }
 
-interface Result {
+export interface Result {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -23,7 +23,7 @@ const getRating = (average: number, target: number): Rating => {
   else return { value: 3, description: 'you rock' };
 };
 
-const calculateExercise = (dailyHours: number[], target: number): Result => {
+export const calculateExercise = (dailyHours: number[], target: number): Result => {
   const periodLength = dailyHours.length;
   const average = dailyHours.reduce((a, b) => a + b) / periodLength;
 
