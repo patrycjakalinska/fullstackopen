@@ -16,7 +16,7 @@ const isDate = (date: string): boolean => {
 };
 
 const parseDate = (date: unknown) => {
-  if (!date || !isString(date) || isDate(date)) {
+  if (!date || !isString(date) || !isDate(date)) {
     throw new Error('Incorrect or missing date: ' + date);
   }
   return date;
@@ -43,12 +43,14 @@ const toNewPatient = (object: unknown): NewPatient => {
   if (
     'name' in object &&
     'dateOfBirth' in object &&
+    'ssn' in object &&
     'gender' in object &&
     'occupation' in object
   ) {
     const newPatient: NewPatient = {
       name: parseString(object.name),
       dateOfBirth: parseDate(object.dateOfBirth),
+      ssn: parseString(object.ssn),
       gender: parseGender(object.gender),
       occupation: parseString(object.occupation),
     };
