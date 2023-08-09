@@ -16,7 +16,7 @@ export interface Diary {
   id: number;
   date: string;
   weather: Weather;
-  visibility: Visibility;
+  visibility: string;
   comment: string;
 }
 
