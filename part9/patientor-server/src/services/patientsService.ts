@@ -26,10 +26,13 @@ const addPatient = (patient: NewPatient): Patient => {
   return newPatient;
 };
 
-const getPatient = (id: string) => {
-  const patient = patients.find(p => p.id === id)
-  return patient
-}
+const getPatient = (id: string): Patient | undefined => {
+  console.log('AAAAAAAAAA')
+  console.log('id backend: ' + id);
+  console.log(patients)
+  const patient = patients.find((p) => p.id === id);
+  return patient;
+};
 
 export default {
   getPatients,

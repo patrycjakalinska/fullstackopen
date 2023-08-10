@@ -10,15 +10,8 @@ router.get('/', (_req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  try {
-    const foundPatient = patientService.getPatient(id);
-    res.json(foundPatient);
-  } catch (err: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (err instanceof Error) {
-      errorMessage += ' Error: ' + err.message;
-    }
-  }
+  const foundPatient = patientService.getPatient(id);
+  res.json(foundPatient);
 });
 
 router.post('/', (req, res) => {
