@@ -5,7 +5,6 @@ import {
   Route,
   Link,
   Routes,
-  useParams,
 } from 'react-router-dom';
 import { Button, Divider, Container, Typography } from '@mui/material';
 
